@@ -1,0 +1,62 @@
+- hosts: task
+  vars_files:
+          - secret.yml
+  vars:
+          - os_name: "{{ ansible_facts['distribution'] }}"
+            email:
+                    -  19bcs086@gbu.ac.in
+                    -  satyamskic807681@gmail.com
+                    -  satyamgbu962531@gmail.com
+
+  tasks: 
+  - block:    
+        - name: Installing httpd
+          package:
+              name: httpd
+              state: present
+          ignore_errors: yes  
+          register: httpd
+
+        - name: Download Image from github
+          get_url:
+            url: "https://raw.githubusercontent.com/satyamskic/terra-image/master/nature.jpg"
+            dest: /var/www/html/satyam.jpg
+          register: github
+          
+        - name: Starting HTTPD service
+          service:
+              name: httpd
+              state: started
+          register: service
+    rescue:
+        - name: Sending mail 
+          debug:
+            msg: "Something is wrong"
+            
+    always:
+        - name: Sending an e-mail using Gmail SMTP servers
+          loop: "{{email}}" 
+          mail:
+            host: smtp.gmail.com
+            port: 587
+            username: "{{login}}"
+            password: "{{pass}}"
+            to: "{{item}}"
+            subject: Ansible-report
+            body: "HTTPD software installation 
+             {{httpd}} 
+             Downloading image
+             {{github}}
+             Starting service 
+             {{service}}"
+           
+           
+
+            
+
+
+
+
+
+
+

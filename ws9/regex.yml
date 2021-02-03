@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+    - name: Changing the line by using lineinfile module
+      lineinfile:
+         path: /root/Ansible/ws9/httpd.conf
+         regexp: "#Listen 0.0.0.0"
+         line: "#Listen 12.34.56.78:80"
+         
+    - name: Replace module 
+      replace:
+         path: /root/Ansible/ws9/httpd.conf
+         regexp: '0.0.0.0'
+         replace: '12.34.56.78:80'
+
+ 
+

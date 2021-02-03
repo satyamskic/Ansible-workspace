@@ -1,0 +1,23 @@
+- hosts: task
+  gather_facts: false
+  tasks:
+       - name: task1
+         async: 15
+         poll: 0
+         command: sleep 100
+         ignore_errors: yes
+         register: async
+
+       - name: task2
+         command: sleep 5
+ 
+       - debug:
+            var: async
+       - async_status:
+               jid: "{{ async.ansible_job_id }}"
+         register: status
+         until: status.finished
+         retries: 30
+
+       - debug:
+            var: status

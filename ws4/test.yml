@@ -1,0 +1,28 @@
+- hosts: task
+  vars:
+          - os_name: "{{ ansible_facts['distribution'] }}"
+  tasks:
+        - name: Installing httpd
+          package:
+              name: httpd
+              state: present
+          register: output
+          when: os_name == "RedHat"
+            
+        - name: Writing content in /var/www/html/index.html
+          copy:
+              dest: /var/www/html/index.html
+              content:  This isppp new index page
+          register: output
+          
+        - name: Stating service
+          service:
+               name: httpd
+               state: restarted
+               #      when: output.changed == true
+          register: serv
+
+        - name: print output of change
+          debug:
+              var: serv.status.ActiveState
+

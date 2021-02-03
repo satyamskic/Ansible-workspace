@@ -1,0 +1,47 @@
+- hosts: all
+  tasks:
+     - name: Installing HTTPD software
+       package:
+           name: "httpd"
+           state: present
+           
+     - name: Copying File into /var/www/html
+       copy:
+          content: '# This file was moved to /var/www/html'
+          dest: /var/www/html/satyam.html
+       
+     - name: Replacing AllowOverride none to AllowOverride AuthConfig
+       replace:
+           path: /etc/httpd/conf/httpd.conf
+           regexp: "AllowOverride None"
+           replace: "AllowOverride AuthConfig"
+
+     - name: Copying .htaccess file
+       copy:
+           dest: "/var/www/html/.htaccess"
+           src: ".htaccess"
+      
+     - name: Installing python36
+       package: 
+            name: "python36"
+            state: present      
+
+     - name: Installing passlib libray
+       pip:
+          name: "passlib"
+      
+     - name: Creating www.passwd file
+       htpasswd:
+           path: /etc/www.passwd
+           name: satyam
+           password: 'redhat'
+        
+     - name: Starting services
+       service:
+           name: httpd
+           state: restarted   
+      
+
+
+
+

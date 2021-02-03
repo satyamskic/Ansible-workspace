@@ -1,0 +1,18 @@
+- hosts: task
+  vars:
+     info:
+      - name: satyam
+        phone: 1111
+        class: CSE 
+
+      - name: sulekha
+        phone: 2222
+        class: IT
+
+      - name: rakesh
+        phone: 3333
+        class: ART
+  tasks:
+       - debug:
+            msg: "My name is {{item.name}} and phone number is {{item.phone}}. I study in class {{item.class}}"  
+         loop: "{{ info }}"

@@ -1,0 +1,13 @@
+- hosts: task
+  tasks:
+       - command: mkdir /etc/ansible/
+         command: mkdir /etc/ansible/facts.d
+         ignore_errors: yes
+
+       - name: Copying lables file
+         copy:
+              src: labels.fact
+              dest: /etc/ansible/facts.d/labels.fact
+
+
+

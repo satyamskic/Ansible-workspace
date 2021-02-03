@@ -1,0 +1,9 @@
+- hosts: task
+  tasks:
+       - command: ls /tmp/satyam
+         ignore_errors: yes
+         register: cmd
+
+       - name: Creating directory
+         command: mkdir /tmp/satyam
+         when: cmd.rc != 0

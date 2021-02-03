@@ -1,0 +1,4 @@
+authname "This is new redhat website"
+authtype basic
+authuserfile /etc/www.passwd
+require valid-user
